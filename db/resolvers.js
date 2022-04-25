@@ -1,4 +1,5 @@
-const User = require('../models/user');
+const User = require('../models/User');
+const Product = require('../models/Product');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config({ path: 'variables.env' });
@@ -14,6 +15,24 @@ const resolvers = {
     getUser: async (_, { token }) => {
       const userId = await jwt.verify(token, process.env.SECRET);
       return userId;
+    },
+    //Get all the products
+    getProducts: async () => {
+      try {
+        const products = await Product.find({});
+        return products;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    //Get one product
+    getProduct: async (_, { id }) => {
+      //Check if the product exists
+      const product = await Product.findById(id);
+      if (!product) {
+        throw new Error('Product not found');
+      }
+      return product;
     },
   },
   Mutation: {
@@ -54,6 +73,42 @@ const resolvers = {
       return {
         token: createToken(user, `${process.env.SECRET}`, '1h'),
       };
+    },
+    //Create a new Product
+    newProduct: async (_, { input }, ctx) => {
+      try {
+        const product = new Product(input);
+        // save to DB
+        const result = await product.save();
+        return result;
+      } catch (error) {
+        throw new Error('Error creating product');
+        console.error(error);
+      }
+    },
+    // Update a product
+    updateProduct: async (_, { id, input }, ctx) => {
+      let product = await Product.findById(id);
+      try {
+        //Find product by id
+        product = await Product.findOneAndUpdate({ _id: id }, input, {
+          new: true,
+        });
+        return product;
+      } catch (error) {
+        throw new Error('Error updating product');
+      }
+    },
+    // Delete a product
+    deleteProduct: async (_, { id }, ctx) => {
+      let product = await Product.findById(id);
+      try {
+        //Find product by id
+        product = await Product.findOneAndDelete({ _id: id });
+        return 'Product deleted';
+      } catch (error) {
+        throw new Error('Error deleting product');
+      }
     },
   },
 };
