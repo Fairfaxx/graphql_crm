@@ -1,0 +1,30 @@
+{
+  "name": "crmgraphql",
+  "version": "1.0.0",
+  "description": "a graphql crm ",
+  "main": "index.js",
+  "scripts": {
+    "start": "node .",
+    "dev": "nodemon ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Fairfaxx/graphql_crm.git"
+  },
+  "author": "Fede Lemaire",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Fairfaxx/graphql_crm/issues"
+  },
+  "homepage": "https://github.com/Fairfaxx/graphql_crm#readme",
+  "dependencies": {
+    "apollo-server": "^3.6.7",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
